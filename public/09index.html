@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="lib/jquery-1.12.4.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		 var xhr = new XMLHttpRequest();
+    //发起一个HTTP请求
+    xhr.open("get","http://172.17.3.12:8080/api/benc");
+    xhr.send(null);
+    xhr.onreadystatechange = function(){
+        if(xhr.readyState==4&&xhr.status==200){
+           
+            var json = JSON.parse(xhr.responseText);
+            console.log(json)
+        }
+    };
+	</script>
+ 
+</body>
+</html>

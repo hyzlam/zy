@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="lib/template-native.js"></script>
+    <script src="ajax.js"></script>
+
+</head>
+<body>
+    <ul>
+
+    </ul>
+<script id="fast" type="text/html">
+    <%for(var i=0;i<list.length;i++){%>
+        <li>
+            <span><%=list[i].datetime%></span><span><%=list[i].remark%></span>
+        </li>
+    <%}%>
+</script>
+<script>
+    ajax({
+        url:"http://v.juhe.cn/exp/index",
+        dataType:"jsonp",
+        data:{
+            key:"",
+            com:"jd",
+            no:"87742510253"
+        },
+        success:function(data){
+            var result = data.result.list;
+            var html = template("fast",{list:result});
+            document.getElementsByTagName('ul')[0].innerHTML = html;
+        }
+    })
+</script>
+</body>
+</html>

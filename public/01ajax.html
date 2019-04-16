@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    //浏览器内建对象:XMLHttpRequest,用于在服务器与客户端通信(交换数据),由此我们便可以实现对网页的部分更新,而不是刷新整个页面
+    /*
+    * xhr.readyState=0时,unsend    open尚未调用
+    * xhr.readyState=1时,opened    open已调用
+    * xhr.readyState=2时, 接收到头信息
+    * xhr.readyState=3时,loading 接收到响应主体
+    * xhr.readyState=4时,done  响应完成
+    * XMLHttpRequest:要求同协议,同域名,同端口(同源策略,非同源即为跨域)
+    * */
+    //实例化
+    var xhr = new XMLHttpRequest();
+    //发起一个HTTP请求
+    xhr.open("get","http://172.17.3.12:8080/api");
+    xhr.send(null);
+    xhr.onreadystatechange = function(){
+        if(xhr.readyState==4&&xhr.status==200){
+            console.log(xhr.responseText)
+            var json = JSON.parse(xhr.responseText);
+            console.log(json)
+        }
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="text">
+<span></span>
+<script src="lib/jquery-1.12.4.js"></script>
+<script>
+    var inp = $('input');
+    var sp = $('span');
+    inp.on('input',function(){
+        $.ajax({
+            url:"http://suggestion.baidu.com/su",
+            dataType:"jsonp",
+            data:{wd:inp.val()},
+            jsonp:"cb",
+            beforeSend:function(){
+                //在请求前执行的语句
+            },
+            success:function(data){
+                sp.html(data.s.join('-'))
+            }
+        })
+    })
+
+</script>
+</body>
+</html>

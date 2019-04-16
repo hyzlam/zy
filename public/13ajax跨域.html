@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+    //天气预报
+    var fn1 = function(data){
+        console.log(data)
+    };
+    var tag1 = document.createElement('script');
+    tag1.src="http://127.0.0.1:8080/api1?a=1&callback=fn1";
+    document.body.appendChild(tag1)
+    //快递
+    var fn2 = function(data){
+        console.log(data)
+    };
+    var tag2 = document.createElement('script');
+    tag2.src="http://127.0.0.1:8080/api2?a=1&callback=fn2";
+    document.body.appendChild(tag2)
+    //菜谱
+    var fn3 = function(data){
+        console.log(data)
+    };
+    var tag3 = document.createElement('script');
+    tag3.src="http://127.0.0.1:8080/api3?a=1&callback=fn3";
+    document.body.appendChild(tag3)
+</script>
+</body>
+</html>

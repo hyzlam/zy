@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>封装ajax</title>
+</head>
+<body>
+<script>
+
+    function ajax(json){
+        // var url = json.url;
+        // var method = json.method;
+        // var dataType = json.dataType;
+        // var jsonp = json.jsonp;
+        // var data = json.data;
+        // var success = json.success;
+        var {url,method,dataType,jsonp,data,success} = json;//es6 解构赋值
+        if(!url){
+            console.error('url必须传入');
+            return false;
+        }
+        if(!success){
+            console.error('success必须传入');
+            return false;
+        }
+        method = method||"get";
+        dataType = dataType||"json";
+        jsonp = jsonp||"callback";
+        data = data||{};
+        //sendData请求参数的字符串格式
+        var sendData = "";
+        for(var key in data){
+            sendData += key+"="+data[key]+"&"
+        };
+        sendData = sendData.slice(0,-1);
+        //同源
+        if(dataType=="json"){
+            var xhr = new XMLHttpRequest();
+            if(method=="get"){
+                url+="?"+sendData
+            }
+            xhr.open(method,url);
+            if(method=="post"){
+                xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded")
+                xhr.send(sendData);
+            }else{
+                xhr.send(null)
+            }
+            xhr.onreadystatechange=function(){
+                if(xhr.readyState==4&&xhr.status==200){
+                    success(JSON.parse(xhr.responseText));
+                }
+            }
+        }
+        //跨域
+        else if(dataType=="jsonp"){
+            var callback = "ajax"+Math.random().toString().slice(2)+"_"+new Date().getTime()
+            window[callback] = function(data){
+                success(data);
+                document.body.removeChild(tag);
+            };
+            var tag = document.createElement('script');
+            tag.src=url+"?"+sendData+"&"+jsonp+"="+callback;
+            document.body.appendChild(tag)
+        }
+    }
+
+
+    ajax({
+        url:"http://suggestion.baidu.com/su",
+        dataType:"jsonp",
+        jsonp:"cb",
+        data:{wd:"china"},
+        success:function(data){
+            console.log(data)
+        }
+    })
+</script>
+</body>
+</html>

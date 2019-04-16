@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form>
+        <input type="file">
+        <span></span>
+        <input type="button" value="提交">
+
+    </form>
+    <script>
+        //获取相关DOM
+        var process = document.getElementsByTagName('span')[0];
+        var fileInp = document.getElementsByTagName('input')[0];
+        var btn = document.getElementsByTagName('input')[1];
+        btn.onclick = sendFile;
+        function sendFile(){
+            //成功次数
+            var success = 0;
+            // 文 件
+            var file = fileInp.files[0];
+            // 文件名
+            var fileName = file.name;
+            // 每片文件的大小:2M;   1M = 1024KB   1KB = 1024B
+            var shardSize = 2*1024*1024;//10
+            // 文件总大小
+            var size = file.size;//103
+            // total
+            var total = Math.ceil(size/shardSize);//11
+            // index
+            for(var i=0;i<total;i++){
+                var start = i*shardSize;
+                var end = (i+1)*shardSize>size?size:(i+1)*shardSize;
+                var form = new FormData();
+                form.append("name",fileName);
+                form.append("total",total);
+                form.append("index",i);
+                form.append("data",file.slice(start,end));
+                var xhr = new XMLHttpRequest();
+                xhr.open('post','/upload');
+                xhr.send(form);
+                xhr.onload = function(){
+                    //readyState=4
+                    success++;//发送的分片的个数
+                    console.log(success/total*100+"%")
+                }
+            }
+
+
+
+
+
+
+        }
+    </script>
+</body>
+</html>
